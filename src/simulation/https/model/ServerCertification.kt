@@ -1,0 +1,27 @@
+package simulation.https.model
+
+import simulation.util.CipherUtil
+
+interface ServerCertification : Certification {
+    fun rsaDecrypt(input: String): String
+}
+
+interface Certification {
+    val rsaPublicKeyStr: String
+}
+/**
+ * Created by Chef.Xie on 2021-10-15
+ * Key generator:
+val generator = KeyPairGenerator.getInstance("RSA")
+val keyPair = generator.genKeyPair()
+publicKey = Base64.getEncoder().encodeToString(keyPair.public.encoded)
+privateKey = Base64.getEncoder().encodeToString(keyPair.private.encoded)
+ */
+object ServerCertificationImpl : ServerCertification {
+    override val rsaPublicKeyStr: String = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnIBapC3hTcEWkx4Kzr5RzGumVcnkL19ww+K3EGinHwTgkAx7BcmF8fymKNwXrKyZlSIkGKZ8x0mq/OSVKarxlQ21E+YYWiU7Dgz10tHq3QuEfvYbncw++VgvKRxlbDUqJ3gmNAVruDzU4dD55tjPZJU9TfBk6jIbAWh/5THdlrbyl9D8nOaDIAkNF3MysduLeduYl+mamYPd/s3sOhQJhY4Ho0RF/ZXic/b/dl6+V+zj3O5OcnRX/Cbnp2TplEnWD4w0G6/DhKMP/HxXuAxE4Ja94yYvCDOMmdMC2QKuCUPUAz10OfuXK+UYHjhOmnYCAG27cFc9hzknlIrmdraU9QIDAQAB"
+    private val rsaPrivateKeyStr: String = "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCcgFqkLeFNwRaTHgrOvlHMa6ZVyeQvX3DD4rcQaKcfBOCQDHsFyYXx/KYo3BesrJmVIiQYpnzHSar85JUpqvGVDbUT5hhaJTsODPXS0erdC4R+9hudzD75WC8pHGVsNSoneCY0BWu4PNTh0Pnm2M9klT1N8GTqMhsBaH/lMd2WtvKX0Pyc5oMgCQ0XczKx24t525iX6ZqZg93+zew6FAmFjgejREX9leJz9v92Xr5X7OPc7k5ydFf8JuenZOmUSdYPjDQbr8OEow/8fFe4DETglr3jJi8IM4yZ0wLZAq4JQ9QDPXQ5+5cr5RgeOE6adgIAbbtwVz2HOSeUiuZ2tpT1AgMBAAECggEAdB95IiE47+y5x2efNVBaeYfW4Ajx24TBs1dh5jcA6i9AQSJBlkW1sZx53g+RMXrQaqvuhKvkIiszSHqDg2tn3eVR2vX8U8cUTpSnQkqoLmQBaANM8oU+pN0eAS8kwmmgYbDxB+CN0SKyAuyAwR1WpZdm6ZHaDzwmdaEIZRPfC5h7Q6m/5yqh6mRzlV951gVwEvn4oG8s+K6wmXz6RujIz/7315iwH/eGxcCiuqWsG3RmqPn5Fnmkx3yzThqZ/z9uxFBHYtMmRtuPRNhicEyu8b6WGLNacvgz8SQRfPFUuoOxzaNawhsJ3OVjcvVvxNiPrZGeuVMNUk/dXmpzsZsGAQKBgQD6wECm6Z62FZVqnirzvqm4yUlxbp9i/P7ahwts14MOzuwnBmEoadqAbwTbGUeC0n8y4CWqrc2+10+jSXPYd+RQdLEHy0gwgIT4Fd+S8g+8WSCiUnFmQjQrIuWJn/l8/JZ8BygD+M84uDOTmCHZUNyT7TBub2wOTz1q/f+xBeoOYQKBgQCfxwcv+x3OUejVBiSZYq23Wr/fIX/i4B3zJaWg6ODKO/NZ2a2ms8ND4PtycyhA+CC2wAHtXOfRd7d54ZXNO1gTjpsC8K70WxkHPfDl/8Cw4lwk6y8dGQki36XtHqgbMTs1ZpaQIOHYcLUIUqjsCqffddivWWTyq5WmZvQ77RbHFQKBgQCb8LYEV6OZT4D1plnF7hv0zFF9VrOOxxHjazqivMBHlE3u0xvXG0WEvAZED8uWQzxRsm4aYC5k8dgYD1UZGS6HDpsN4tEJQNPwyQGajClXFAKkkCrv0lpJPVGMrk1k+lzH01eCaNjOSFfjASiD0rLq2AZXl7mWiJcEk+PQ/oGZ4QKBgQCaFRTAV7oBuwn/TSJEbV47gR+h7atnvlwDnN2iVJJbVP80OfD130vCjRfP4nACX4ck1fvFzR+d6Iae2kZdmgoxKgghCLyf165GRpynIUHREyprTAauV/Nwlx9rkXHqb0q7D8jJC3zg/qgGc7iFkS0dGYeyalIomAIEbCrCE70wlQKBgDJOBT14s3wovpgTuDAsrGqKiRPgIinwF878BwUNUjnW7wWFWOVzDvILAozwBTRn0DDn6IwEcnJHv32+6HPk2mWH/QYiEq5P/GVOqLza3ZYgGBHVzoj7rKOgrs4CPhy3saRife1vqnboQRpTQmSIKMS+HxIZCxTl1ZybA0xELvch"
+
+    override fun rsaDecrypt(input: String): String {
+        return CipherUtil.rsaDecryptByPrivateKey(input, rsaPrivateKeyStr)
+    }
+}
